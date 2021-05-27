@@ -1,0 +1,34 @@
+/*specification for all*/
+* {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+}
+/*-------------------------*/
+
+/*bootstrap color adjusting*/
+.btn-primary {
+    background-color: #1E90FF !important;
+    border-color: #006BFF !important;
+    color: #1D1D1D !important;
+    font-weight: bold;
+}
+.btn-primary:hover {background-color: #006BFF !important;}
+.bg-primary {background-color: #1E90FF !important;}
+.text-primary {color: #1E90FF !important;}
+.bg-dark {background-color: #1D1D1D !important;}
+.text-dark {color: #1D1D1D !important;}
+.bg-light {background-color: #FFFFFF !important;}
+.text-light {color: #FFFFFF !important;}
+.border-primary {border-color: #1E90FF !important;}
+.border-light {border-color: #FFFFFF !important;}
+.border-danger {border-color: #FF0000 !important;}
+.text-danger {color: #FF0000 !important;}
+a {color: #1E90FF !important;}
+a:hover {color: #006BFF !important;}
+button > i {color: #FFFFFF !important;}
+/*-------------------------*/
+
+/*some specification*/
+h1, h2, h3, h4, h5, h6 {font-family: 'Roboto Slab', serif;}
+.calculation-panel-x, .calculation-panel-y, .calculation-panel-x-y, .calculation-panel-x-and-y {display: none;}
+/*-------------------------*/
