@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang=en>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/5c503e8b03.js" crossorigin="anonymous"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Slab&display=swap" rel="stylesheet">
+        <link rel=icon href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14/svgs/solid/square-root-alt.svg>
+        <link rel="stylesheet" href="style.css">
+        <title>Statistic Calculator</title>
+    </head>
+    <body onload="init()" style="background: url(background.png) no-repeat center fixed;background-size: cover;">
+        <div class="container bg-dark text-white px-5">
+            <!--help button-->
+            <button type="button" class="btn btn-lg btn-primary position-fixed" data-toggle="modal" data-target="#help" style="right: 10px;top: 10px;z-index:5;">
+                <i class="fas fa-question-circle fa-2x"></i>
+            </button>
+            <div class="modal fade" id="help" tabindex="-1" aria-labelledby="help" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">What do you want to know?</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex row justify-content-around align-content-around align-items-center p-2">
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-median">Median</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-modes">Modes</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-percentile">Percentile</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-sum">Sum</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-mean">Mean</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-harmonic-mean">Harmonic Mean</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-square">Square</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-cubic">Cubic</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-square-sum">Square Sum</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-sum-square">Sum Square</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-mean-square">Mean Square</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-root-mean-square">Root Mean Square</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-variance">Variance</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-standard-deviation">Standard Deviation</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-standardization">Standardization</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-skewness">Skewness</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-covariance">Covariance</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-correlation-coefficient">Correlation Coefficient</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-determination-coefficient">Determination Coefficient</button>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                                    <button type="button" class="btn btn-dark btn-block text-light" data-toggle="modal" data-target="#help-linear-regression">Linear Regression</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!----------------------------->
+            <!--help details-->
+            <div class="modal fade" id="help-median" tabindex="-1" aria-labelledby="help-median" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Median</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">The <b>Median</b> is the middle value of a series of numbers that have been ordered.</p>
+                            <p>Example:<br/>
+                                \(\left(x\right)\) = [1, 2, <strong>3</strong>, 4, 5]<br/>
+                                the median of \(\left(x\right)\) is 3.
+                            </p>
+                            <p>If a series of numbers is even in length, then the median is two numbers.</p>
+                            <p>Example:<br/>
+                                \(\left(x\right)\) = [1, <strong>2</strong>, <strong>3</strong>, 4]<br/>
+                                the median of \(\left(x\right)\) are 2 and 3.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-modes" tabindex="-1" aria-labelledby="help-modes" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Modes</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">The <b>Modes</b> are the numbers that appear most frequently in a series of numbers or 
+                                numbers with the highest frequency in a series of numbers.
+                            </p>
+                            <p>Example:<br/>
+                                \(\left(x\right)\) = [4, <strong>3</strong>, <strong>3</strong>, 7, 6]<br/>
+                                the modes of \(\left(x\right)\) is 3.
+                            </p>
+                            <p>if there are several numbers having the same frequency, then the mode is that numbers.</p>
+                            <p>Example:<br/>
+                                \(\left(x\right)\) = [6, <strong>2</strong>, <strong>3</strong>, 4, 9, 23, 5, <strong>3</strong>, 11, <strong>2</strong>]<br/>
+                                the modes of \(\left(x\right)\) are 2 and 3.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-percentile" tabindex="-1" aria-labelledby="help-percentile" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Percentile</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">The <b>Percentiles</b> are used in statistics to give you a number 
+                                that describes the value that a given percent of the values are lower than. 
+                            </p>
+                            <p>Example:<br/>
+                                If we have The 25% percentile value of a series is 100, it means that 25% of values in that series is equal or lower than 100. 
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://www.w3schools.com/datascience/ds_stat_percentiles.asp" target="_blank">w3school. 
+                                <i>Data Science - Statistics Percentiles</i>.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-sum" tabindex="-1" aria-labelledby="help-sum" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Sum</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>The <b>Sum</b> is the result of adding two or more numbers.</p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Sum\left(x\right)=\sum_i^n x_i$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(Sum\left(x\right)=\) sum of a series \(\left(x\right)\)</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p>Example:<br/>
+                                \(\left(x\right)=[2, 3, 4]\)<br/>
+                                \(Sum\left(x\right)=2+3+4=9\)
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-mean" tabindex="-1" aria-labelledby="help-mean" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Mean</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>The <b>Mean</b> is the average of a series of numbers or the sum of a series divided by its length.</p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Mean\left(x\right)=\frac{\sum_i^n x_i}{n}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(Mean\left(x\right)=\) mean of a series \(\left(x\right)\)</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(n=\) length of a series</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p>Example:<br/>
+                                \(\left(x\right)=[1, 3, 2]\)<br/>
+                                \(Mean\left(x\right)=\frac{1+3+2}{3}=2\)
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-harmonic-mean" tabindex="-1" aria-labelledby="help-harmonic-mean" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Harmonic Mean</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>The <b>Harmonic Mean</b> is the reciprocal of the mean of the reciprocals of all values in a series.</p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Harmonic Mean\left(x\right)=\frac{n}{\sum_i^n \frac{1}{x_i}}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(Harmonic Mean\left(x\right)=\) harmonic mean of a series \(\left(x\right)\)</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(n=\) length of a series</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://realpython.com/python-statistics/" target="_blank">Stojiljkovic, M. 
+                                <i>Python Statistics Fundamentals: How to Describe Your Data</i>.
+                                Real Python.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-square" tabindex="-1" aria-labelledby="help-square" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Square</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>The <b>Square</b> is the result of a value times by it self.</p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Square\left(x\right)=x^2$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(Square\left(x\right)=\) square of a value \(\left(x\right)\)</li>
+                                    <li>\(x=\) a value</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-cubic" tabindex="-1" aria-labelledby="help-cubic" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Cubic</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>The <b>Cubic</b> is the result of a value times by it self then times by it self again.</p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Cubic\left(x\right)=x^3$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(Cubic\left(x\right)=\) cubic of a value \(\left(x\right)\)</li>
+                                    <li>\(x=\) a value</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-square-sum" tabindex="-1" aria-labelledby="help-square-sum" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Square Sum</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>The <b>Square Sum</b> is the result of square of sum of a series.</p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Square Sum\left(x\right)=\left(\sum_i^n x_i\right)^2$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(Square Sum\left(x\right)=\) square sum of a series \(\left(x\right)\)</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-sum-square" tabindex="-1" aria-labelledby="help-sum-square" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Sum Square</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>The <b>Sum Square</b> is the result of sum of square of each value in a series.</p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Sum Square\left(x\right)=\sum_i^n \left(x_i^2\right)$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(Sum Square\left(x\right)=\) sum square of a series \(\left(x\right)\)</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-mean-square" tabindex="-1" aria-labelledby="help-mean-square" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Mean Square</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>The <b>Mean Square</b> is the result of mean of square of each value in a series.</p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Mean Square\left(x\right)=\frac{\sum_i^n \left(x_i^2\right)}{n}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(Mean Square\left(x\right)=\) mean square of a series \(\left(x\right)\)</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(n=\) length of a series</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-root-mean-square" tabindex="-1" aria-labelledby="help-root-mean-square" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Root Mean Square</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>The <b>Root Mean Square</b> is the result of root of mean of square of each value in a series.</p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$RMS\left(x\right)=\sqrt\frac{\sum_i^n \left(x_i^2\right)}{n}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(RMS\left(x\right)=\) root mean square of a series \(\left(x\right)\)</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(n=\) length of a series</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-variance" tabindex="-1" aria-labelledby="help-variance" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Variance</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">
+                                The <b>Variances</b> reflects the differences we see in the distributions.
+                                Although the variance is an exceptionally important concept and one of the most commonly used statistics, 
+                                it does not have the direct intuitive interpretation we would like. Because it is based on squared deviations, 
+                                the result is in terms of squared units.
+                            </p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$S^2\left(x\right)={\sum_i^n\left(x_i-\left({\sum_i^nx_i\over n}\right)\right)^2\over n-1}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(S^2\left(x\right)=\) variance of a series</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(n=\) length of values</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://mega.nz/file/AItVBShb#Z_fuJK3Q1AhylWipEsTc7RTk3hwAIsnu1DdN2jQTTfc" target="_blank">Howell, D. C. 2014. 
+                                <i>Fundamental Statistics for the Behavioral Sciences, 8<sup>th</sup> edition</i>.
+                                Wadsworth: Wadsworth Cengage Learning.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-standard-deviation" tabindex="-1" aria-labelledby="help-standard-deviation" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Standard Deviation</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">
+                                Squared units in <b>variance</b> are awkward things to talk about and have little intuitive meaning with respect to the data.
+                                Fortunately, the solution to this problem is simple: Take the square root of the variance. 
+                                The <b>Standard Deviation</b> is defined as the positive square root of the variance and, for a sample, is symbolized as \(S\) 
+                                (with a subscript identifying the variable, if necessary).
+                            </p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$S\left(x\right)=\sqrt{S^2}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(S\left(x\right)=\) standard deviation of a series</li>
+                                    <li>\(S^2=\) variance of a series</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(n=\) length of values</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://mega.nz/file/AItVBShb#Z_fuJK3Q1AhylWipEsTc7RTk3hwAIsnu1DdN2jQTTfc" target="_blank">Howell, D. C. 2014. 
+                                <i>Fundamental Statistics for the Behavioral Sciences, 8<sup>th</sup> edition</i>.
+                                Wadsworth: Wadsworth Cengage Learning.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-standardization" tabindex="-1" aria-labelledby="help-standardization" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Standardization</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">
+                                It can be difficult to compare the value 1.0 with the value 790, but if we scale them both into comparable values, we can easily see how much one value is compared to the other.
+                                There are different methods for scaling data, here we will use a method called <b>standardization</b>.
+                            </p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$z\left(x_i\right)=\frac{x_i-\left(\frac{\sum_i^n x_i}{n}\right)}{S}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(z\left(x_i\right)=\) standardization of each value in a series</li>
+                                    <li>\(S=\) standard deviation of a series</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(n=\) length of values</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://www.w3schools.com/python/python_ml_scale.asp" target="_blank">w3schools. 
+                                <i>Machine Learning - Scale</i>.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-skewness" tabindex="-1" aria-labelledby="help-skewness" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Skewness</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">
+                                The <b>Skewness</b> is a measure of the degree to which a series is asymetrical.
+                                <b>Negatively skewed</b> means A distribution that trails off to the left.
+                                <b>Positively skewed</b> means A distribution that trails off to the right.
+                            </p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Skewness\left(x\right)=\frac{n\left(\sum_i^n\left(\left(x_i-\left(\frac{\sum_i^n x_i}{n}\right)\right)^3\right)\right)}{\left(n-1\right)\left(n-2\right)S^3}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(Skewness\left(x\right)=\) skewness of a series</li>
+                                    <li>\(S=\) standard deviation of a series</li>
+                                    <li>\(x_i=\) values of a series</li>
+                                    <li>\(n=\) length of values</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://mega.nz/file/AItVBShb#Z_fuJK3Q1AhylWipEsTc7RTk3hwAIsnu1DdN2jQTTfc" target="_blank">Howell, D. C. 2014. 
+                                <i>Fundamental Statistics for the Behavioral Sciences, 8<sup>th</sup> edition</i>.
+                                Wadsworth: Wadsworth Cengage Learning.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-covariance" tabindex="-1" aria-labelledby="help-covariance" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Covariance</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">
+                                The <b>Covariance</b> is basically a number that reflects the degree to which two variables vary together.
+                                If, for example, high scores on one variable tend to be paired with high scores on the other, the covariance will be large and positive.
+                                When high scores on one variable are paired about equally often with both high and low scores on the other, the covariance will be near zero, 
+                                and when high scores on one variable are generally paired with low scores on the other, the covariance is negative.
+                            </p>
+                            <p class="text-justify">
+                                It is possible to show that the covariance will be at its <b>positive maximum</b> whenever X and Y are perfectly positively correlated \(\left(r=+1.00\right)\) and 
+                                at its <b>negative maximum</b> whenever they are perfectly negatively correlated \(\left(r=-1.00\right)\). 
+                                When there is no relationship \(\left(r=0\right)\), the covariance will be zero.
+                            </p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$cov\left(x, y\right)={\sum_i^n\left(x_i-\left({\sum_i^{n_x}x_i\over n_x}\right)\right)\left(y_i-\left({\sum_i^{n_y}y_i\over n_y}\right)\right)\over n-1}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(cov\left(x, y\right)=\) covariance</li>
+                                    <li>\(x_i=\) values of x-variable in sample</li>
+                                    <li>\(y_i=\) values of y-variable in sample</li>
+                                    <li>\(n=\) length of values</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://mega.nz/file/AItVBShb#Z_fuJK3Q1AhylWipEsTc7RTk3hwAIsnu1DdN2jQTTfc" target="_blank">Howell, D. C. 2014. 
+                                <i>Fundamental Statistics for the Behavioral Sciences, 8<sup>th</sup> edition</i>.
+                                Wadsworth: Wadsworth Cengage Learning.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-correlation-coefficient" tabindex="-1" aria-labelledby="help-correlation-coefficient" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Correlation Coefficient</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">
+                                When we are dealing with the relationship between two variable, we are concerned with <b>correlation</b>,
+                                and our measure of the degree or strength of this realtionship is represented by <b>correlation coefficient</b>.
+                                We can use a number of different correlation coefficients, depending primarily on the underlying nature of the measurements, 
+                                but the most common correlation coefficient—the <b>Pearson product-moment correlation coefficient \(\left(r\right)\)</b>.
+                            </p>
+                            <p class="text-justify">
+                                It is important to note that the sign of the correlation coefficient has no meaning other than to denote the direction of the relationship.
+                                <b>A negative relationship</b> is a relationship in which increases in one variable are associated with decreases in the other. 
+                                <b>A positive relationship</b> is a realtionship in which increases in one variable are associated with increases in the other.
+                                The correlation coefficient is simply a point on the scale between −1.00 and +1.00, and the closer it is to either of those limits, 
+                                the stronger is the relationship between the two variables.
+                            </p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$r\left(x, y\right)={n\left(\sum_i^{n_x}\left(x_i\right)\left(y_i\right)\right)-\left(\left(\sum_i^{n_x}x_i\right)\left(\sum_i^{n_y}y_i\right)\right)\over\sqrt{\left(n_x\left(\sum_i^{n_x}x_i^2\right)-\left(\sum_i^{n_x}x_i\right)^2\right)\left(n_y\left(\sum_i^{n_y}y_i^2\right)-\left(\sum_i^{n_y}y_i\right)^2\right)}}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(r\left(x, y\right)=\) correlation coefficient</li>
+                                    <li>\(x_i=\) values of x-variable in sample</li>
+                                    <li>\(y_i=\) values of y-variable in sample</li>
+                                    <li>\(n=\) length of values</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://mega.nz/file/AItVBShb#Z_fuJK3Q1AhylWipEsTc7RTk3hwAIsnu1DdN2jQTTfc" target="_blank">Howell, D. C. 2014. 
+                                <i>Fundamental Statistics for the Behavioral Sciences, 8<sup>th</sup> edition</i>.
+                                Wadsworth: Wadsworth Cengage Learning.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-determination-coefficient" tabindex="-1" aria-labelledby="help-determination-coefficient" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Determination Coefficient</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">
+                                The squared correlation coefficient or <b>coefficient of determination \(\left(R^2\right)\)</b> is very important statistic
+                                to explain the strength of the relationship we have between two variables.
+                            </p>
+                            <p class="text-justify">
+                                It is important to note that the sign of the determination coefficient has no meaning other than to denote the direction of the relationship.
+                                <b>A negative relationship</b> is a relationship in which increases in one variable are associated with decreases in the other. 
+                                <b>A positive relationship</b> is a realtionship in which increases in one variable are associated with increases in the other.
+                                The determination coefficient is simply a point on the scale between −1.00 and +1.00, and the closer it is to either of those limits, 
+                                the stronger is the relationship between the two variables.
+                            </p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$R^2\left(x, y\right) = r^2\left(x, y\right)$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(R^2\left(x, y\right)=\) coefficient of determination</li>
+                                    <li>\(r\left(x, y\right)=\) correlation coefficient</li>
+                                    <li>\(x_i=\) values of x-variable in sample</li>
+                                    <li>\(y_i=\) values of y-variable in sample</li>
+                                    <li>\(n=\) length of values</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://mega.nz/file/AItVBShb#Z_fuJK3Q1AhylWipEsTc7RTk3hwAIsnu1DdN2jQTTfc" target="_blank">Howell, D. C. 2014. 
+                                <i>Fundamental Statistics for the Behavioral Sciences, 8<sup>th</sup> edition</i>.
+                                Wadsworth: Wadsworth Cengage Learning.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-linear-regression" tabindex="-1" aria-labelledby="help-linear-regression" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-light text-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-label">Linear Regression</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-justify">
+                                The \(Y=bX+a\) equation is the <b>regression equation</b>, or the equation that predict Y from X, and the values of <b>the intercept (b)</b> and the <b>slope (a)</b> are called the <b>regression coefficients</b>,
+                                but it's often refers only to slope. The interpretation of this equation is straightforward.
+                            </p>
+                            <p>Mathematically we can write as follows,</p>
+                            <p class="overflow-auto">$$Y=aX+b$$</p>
+                            <p class="overflow-auto">$$a={\sum_i^n\left(x_i-\left({\sum_i^{n_x}x_i\over n_x}\right)\right)\left(y_i-\left({\sum_i^{n_y}y_i\over n_y}\right)\right)\over \sum_i^n\left(x_i-\left({\sum_i^nx_i\over n}\right)\right)^2}$$</p>
+                            <p class="overflow-auto">$$b={\sum_i^{n_y}y_i-\left(b\right)\left(\sum_i^{n_x}x_i\right)\over n}$$</p>
+                            <p>Where:
+                                <ul>
+                                    <li>\(X=\) the predictor values</li>
+                                    <li>\(Y=\) the predicted values</li>
+                                    <li>\(a=\) the slope of the regression line (the amount difference in \(y_i\) associated with one unit difference in \(x_i\)</li>
+                                    <li>\(b=\) the intercept (the predicted value of \(y_i\) when \(x_i=0\)</li>
+                                    <li>\(x_i=\) values of x-variable in sample</li>
+                                    <li>\(y_i=\) values of y-variable in sample</li>
+                                    <li>\(n=\) length of values</li>
+                                    <li>\(i=\) index of values (1, 2, 3, ..., \(n\))</li>
+                                </ul>
+                            </p>
+                            <p class="text-justify">
+                                <b>Reference:</b><br/>
+                                <a href="https://mega.nz/file/AItVBShb#Z_fuJK3Q1AhylWipEsTc7RTk3hwAIsnu1DdN2jQTTfc" target="_blank">Howell, D. C. 2014. 
+                                <i>Fundamental Statistics for the Behavioral Sciences, 8<sup>th</sup> edition</i>.
+                                Wadsworth: Wadsworth Cengage Learning.</a>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!----------------------------->
+            <header>
+                <h1 class="pt-5 pb-2 font-weight-bold border-bottom border-light text-center">Statistics Calculator</h1>
+            </header>
+            <h4 class="mb-4 mt-5">Input your data here:</h4>
+            <div class="custom-file mb-3">
+                <input id="file-input" type="file" class="custom-file-input" name="filename">
+                <label id="file-label" class="custom-file-label text-secondary border-primary" for="custom-file">.txt or .dat</label>
+            </div>
+            <div id ="data-req">
+                Data requirements:
+                <ol>
+                    <li>The length of data \(\left(x\right)\) should be the same as the length of data \(\left(y\right)\)</li>
+                    <li>Your data should be in two column without column title</li>
+                    <li>Your data extension should be .txt or .dat</li>
+                </ol>
+            </div>
+            <h4 class="p-2">Calculation:</h4>
+            <div id="button-container" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row d-flex justify-content-around align-content-around align-items-start mb-3">
+                <div id="refers-to-x" class="col-11 col-sm-11 col-md-5 col-lg-5 col-xl-5 border border-primary rounded p-2 m-2">
+                    <h5 class="calculation-title-x">Refers to \(\left(x\right)\)</h5>
+                    <div class="calculation-panel-x row justify-content-around align-content-around align-items-center p-2">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_x_result()" class="btn btn-primary btn-block">Values of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_median_x_result()" class="btn btn-primary btn-block">Median of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_modes_x_result()" class="btn btn-primary btn-block">Modes of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_percentile_x_result()" class="btn btn-primary btn-block">Percentile of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_sum_x_result()" class="btn btn-primary btn-block">Sum of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_mean_x_result()" class="btn btn-primary btn-block">Mean of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_harmonic_mean_x_result()" class="btn btn-primary btn-block">Harmonic Mean of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_square_x_result()" class="btn btn-primary btn-block">Square of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_cubic_x_result()" class="btn btn-primary btn-block">Cubic of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_square_sum_x_result()" class="btn btn-primary btn-block">Square Sum of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_sum_square_x_result()" class="btn btn-primary btn-block">Sum Square of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_mean_square_x_result()" class="btn btn-primary btn-block">Mean Square of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_root_mean_square_x_result()" class="btn btn-primary btn-block">Root Mean Square of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_variance_x_result()" class="btn btn-primary btn-block">Variance of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_standard_deviation_x_result()" class="btn btn-primary btn-block">Standard Deviation of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_standardization_x_result()" class="btn btn-primary btn-block">Standardization of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_skewness_x_result()" class="btn btn-primary btn-block">Skewness of \(\left(x\right)\)</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="refers-to-y" class="col-11 col-sm-11 col-md-5 col-lg-5 col-xl-5 border border-primary rounded p-2 m-2">
+                    <h5 class="calculation-title-y">Refers to \(\left(y\right)\)</h5>
+                    <div class="calculation-panel-y row justify-content-around align-content-around align-items-center p-2">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_y_result()" class="btn btn-primary btn-block">Values of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_median_y_result()" class="btn btn-primary btn-block">Median of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_modes_y_result()" class="btn btn-primary btn-block">Modes of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_percentile_y_result()" class="btn btn-primary btn-block">Percentile of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_sum_y_result()" class="btn btn-primary btn-block">Sum of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_mean_y_result()" class="btn btn-primary btn-block">Mean of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_harmonic_mean_y_result()" class="btn btn-primary btn-block">Harmonic Mean of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_square_y_result()" class="btn btn-primary btn-block">Square of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_cubic_y_result()" class="btn btn-primary btn-block">Cubic of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_square_sum_y_result()" class="btn btn-primary btn-block">Square Sum of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_sum_square_y_result()" class="btn btn-primary btn-block">Sum Square of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_mean_square_y_result()" class="btn btn-primary btn-block">Mean Square of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_root_mean_square_y_result()" class="btn btn-primary btn-block">Root Mean Square of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_variance_y_result()" class="btn btn-primary btn-block">Variance of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_standard_deviation_y_result()" class="btn btn-primary btn-block">Standard Deviation of \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_standardization_y_result()" class="btn btn-primary btn-block">Standardization of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_skewness_y_result()" class="btn btn-primary btn-block">Skewness of \(\left(y\right)\)</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="refers-to-x-y" class="col-11 col-sm-11 col-md-5 col-lg-5 col-xl-5 border border-primary rounded p-2 m-2">
+                    <h5 class="calculation-title-x-y">Refers to \(\left(x\times y\right)\)</h5>
+                    <div class="calculation-panel-x-y row justify-content-around align-content-around align-items-center p-2">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_x_y_result()" class="btn btn-primary btn-block">Values of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_median_x_y_result()" class="btn btn-primary btn-block">Median of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_modes_x_y_result()" class="btn btn-primary btn-block">Modes of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_percentile_x_y_result()" class="btn btn-primary btn-block">Percentile of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_sum_x_y_result()" class="btn btn-primary btn-block">Sum of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_mean_x_y_result()" class="btn btn-primary btn-block">Mean of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_harmonic_mean_x_y_result()" class="btn btn-primary btn-block">Harmonic Mean of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_square_x_y_result()" class="btn btn-primary btn-block">Square of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_cubic_x_y_result()" class="btn btn-primary btn-block">Cubic of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_square_sum_x_y_result()" class="btn btn-primary btn-block">Square Sum of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_sum_square_x_y_result()" class="btn btn-primary btn-block">Sum Square of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_mean_square_x_y_result()" class="btn btn-primary btn-block">Mean Square of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_root_mean_square_x_y_result()" class="btn btn-primary btn-block">Root Mean Square of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_variance_x_y_result()" class="btn btn-primary btn-block">Variance of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_standard_deviation_x_y_result()" class="btn btn-primary btn-block">Standard Deviation of \(\left(x\times y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_standardization_x_y_result()" class="btn btn-primary btn-block">Standardization of \(\left(x\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_skewness_x_y_result()" class="btn btn-primary btn-block">Skewness of \(\left(x\times y\right)\)</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="refers-to-x-and-y" class="col-11 col-sm-11 col-md-5 col-lg-5 col-xl-5 border border-primary rounded p-2 m-2">
+                    <h5 class="calculation-title-x-and-y">Refers to \(\left(x\right)\) and \(\left(y\right)\)</h5>
+                    <div class="calculation-panel-x-and-y row justify-content-around align-content-around align-items-center p-2">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_covariance_result()" class="btn btn-primary btn-block">Covariance of \(\left(x\right)\) and \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_correlation_coefficient_result()" class="btn btn-primary btn-block">Correlation Coefficient of \(\left(x\right)\) and \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_determination_coefficient_result()" class="btn btn-primary btn-block">Determination Coefficient of \(\left(x\right)\) and \(\left(y\right)\)</button>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-2 btn-group">
+                            <button type="button" onclick="function_linear_regression_result()" class="btn btn-primary btn-block">Linear Regression of \(\left(x\right)\) and \(\left(y\right)\)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="p-2">Results:</h4>
+            <div id="result-container" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row d-flex justify-content-start align-content-around align-items-center">
+                <div id="result" class="border border-primary rounded p-2 m-2 mb-5 font-weight-bold overflow-auto text-nowrap" style="max-height: 250px;">
+                    <p>. . . . .</p>
+                </div>
+                <button class="btn btn-outline-primary btn-sm m-2 mb-5" onclick="copy('#result')">copy</button>
+            </div>
+            <footer class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 pt-4 p-2 border-top border-primary">
+                <p class="text-center">&copy 2021,
+                    <a class="pl-1" href="https://github.com/the-spatializer" target="_blank">
+                        <i class="fab fa-github"></i> 
+                        the-spatilizer
+                    </a>.
+                </p>
+            </footer>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
